@@ -10,6 +10,9 @@ int main(int argc, char *argv[])
     int *receiveBuffer;
     MPI_Status status;
 
+    MPI_Request myreq_send;
+    MPI_Request myreq_recv;
+
     double t0, t1;
 
     MPI_Init(&argc, &argv);
@@ -31,12 +34,16 @@ int main(int argc, char *argv[])
     /* TODO start */
     /* Send and receive messages as defined in exercise */
     if (myid < ntasks - 1) {
+	MPI_Isend(message, msgsize, MPI_INT, myid+1, myid+1, MPI_COMM_WORLD, &myreq_send);
+	MPI_Wait(&myreq_send, MPI_STATUSES_IGNORE);
+
         printf("Sender: %d. Sent elements: %d. Tag: %d. Receiver: %d\n",
                myid, msgsize, myid + 1, myid + 1);
     }
 
     if (myid > 0) {
-
+	MPI_Irecv(receiveBuffer, msgsize, MPI_INT, myid-1, myid, MPI_COMM_WORLD, &myreq_recv);
+ 	MPI_Wait(&myreq_recv, MPI_STATUSES_IGNORE);
         printf("Receiver: %d. first element %d.\n",
                myid, receiveBuffer[0]);
     }
