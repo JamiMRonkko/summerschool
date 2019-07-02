@@ -47,6 +47,7 @@ void evolve(field *curr, field *prev, double a, double dt)
     dx2 = prev->dx * prev->dx;
     dy2 = prev->dy * prev->dy;
     /* TODO: use OpenACC to parallelise the loops */
+	#pragma acc parallel loop private(i,j)
     for (i = 1; i < nx + 1; i++) {
         for (j = 1; j < ny + 1; j++) {
             currdata[i][j] = prevdata[i][j] + a * dt *
