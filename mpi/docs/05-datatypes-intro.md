@@ -1,9 +1,11 @@
 ---
-title:  USER-DEFINED DATATYPES 
+title:  User defined datatypes
 author: CSC Summerschool
 date:   2019-06
 lang:   en
 ---
+
+# User defined datatypes (part 1) {.section}
 
 # MPI datatypes
 
@@ -98,7 +100,7 @@ MPI_Type_vector(`count`{.input}, `blocklen`{.input}, `stride`{.input}, `oldtype`
 ```fortran
 integer, parameter :: n=2, m=3
 real, dimension(n,m) :: a
-integer :: rowtype
+type(mpi_datatype) :: rowtype
 ! create a derived type
 call mpi_type_vector(m, 1, n, mpi_real, rowtype, ierr)
 call mpi_type_commit(rowtype, ierr)
